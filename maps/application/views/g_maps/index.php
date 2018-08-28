@@ -11,7 +11,7 @@
 
       <div class="form-group">
         <select class="varListPorpinsi form-control" name="varListPorpinsi" id="varListPorpinsi">
-          <option value="0">Pilih Provinsi</option>
+          <option value="0" selected disabled>Pilih Provinsi</option>
           <?php
             foreach ($varListPorpinsi as $vlpro) {
               // code...
@@ -25,11 +25,19 @@
 
       <div class="form-group">
         <select class="varListKabko form-control" name="varListKabko" id="varListKabko" v-model="place">
-          <option value="">Pilih Kabupaten/Kota</option>
+          <option value="" selected disabled>Pilih Kabupaten/Kota</option>
         </select>
       </div>
       <div class="col-md-6"><h3> Latitude : {{ latitude }}</h3></div>
-                      <div class="col-md-6"><h3> Longitude : {{ longitude }}</h3></div>
+      <div class="col-md-6"><h3> Longitude : {{ longitude }}</h3></div>
+
+      <div class="form-group">
+        <select class="type form-control" name="varType" id="varType">
+          <option value="0" selected disabled>Pilih Jenis ATM atau Bank</option>
+          <option value="Atm Artha Graha">Atm Artha Graha</option>
+          <option value="Atm Artha Graha">Bank Artha Graha</option>
+        </select>
+      </div>
       <div class="col-md-12"  v-bind:class="{ 'not-visible' : active }" >
           <iframe frameborder="0" style="width: 100%; height: 350px; border:0" v-bind:src="'https://www.google.com/maps/embed/v1/place?key=AIzaSyCSdxjuCPhzR8BbQe3-crU3qoSC-_ymQBg&q='+ place+'&zoom=11'" allowfullscreen></iframe>
       </div>
