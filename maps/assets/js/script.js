@@ -82,7 +82,7 @@ function findPlaces() {
     var lat = document.getElementById('lat').value;
     var lng = document.getElementById('lng').value;
     var cur_location = new google.maps.LatLng(lat, lng);
-    alert(cur_location);
+    // alert(cur_location);
 
     // prepare request to Places
     var request = {
@@ -102,7 +102,7 @@ function findPlaces() {
 // create markers (from 'findPlaces' function)
 function createMarkers(results, status) {
     if (status == google.maps.places.PlacesServiceStatus.OK) {
-      console.log(results);
+      // console.log(results);
 
         // if we have found something - clear map (overlays)
         clearOverlays();
