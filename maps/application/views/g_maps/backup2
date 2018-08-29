@@ -1,0 +1,67 @@
+var directionsService, geocoder, type, keyword;
+
+(function launch() {
+  $.getScript('https://maps.googleapis.com/maps/api/js?key=AIzaSyB4wS9TPSIExN2MI6WvJMk8-o6CqXEeTC4&language=en&libraries=places')
+    .done(runMapsApi)
+    .fail(() => {
+    alert("Maps API call failed");
+  });
+
+}) ();
+
+var geocoder, infowindow, map;
+
+function runMapsApi(){
+
+  geocoder = new google.maps.Geocoder();
+  infowindow = new google.maps.InfoWindow();
+  type="atm";
+  keyword="mandiri"
+  let pointCenter = new google.maps.LatLng(-6.2614927, 106.8105998);
+
+  map = new google.maps.Map( document.getElementById("map"), {
+    zoom: 14,
+    mapTypeId: google.maps.MapTypeId.ROADMAP,
+    center: pointCenter
+  });
+
+  let PlacesService = new google.maps.places.PlacesService(map);
+
+  PlacesService.nearbySearch({
+    location: pointCenter,
+    radius: 500,
+    type: type,
+    keyword: keyword
+    //https://developers.google.com/places/web-service/supported_types
+
+  }, function(results, status) {
+    if (status == google.maps.places.PlacesServiceStatus.OK) {
+      for (var i = 0; i < results.length; i++) {
+        createMarker(results[i]);
+      }
+    } else {
+      console.log('Error',status)
+    }
+  });
+}
+
+function createMarker(place) {
+  var placeLoc = place.geometry.location;
+  var marker = new google.maps.Marker({
+    map: map,
+    position: place.geometry.location
+  });
+
+  google.maps.event.addListener(marker, 'click', function() {
+    infowindow.setContent(place.name);
+    infowindow.open(map, this);
+  });
+}
+
+var str = "Bank Mandiri Syariah Artha Graha";
+    var res = str.split(" ");
+    var type = res[0];
+    var name = res.slice(1).join(' ');
+
+
+    document.getElementById("demo").innerHTML = name;
