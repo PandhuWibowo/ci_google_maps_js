@@ -12,8 +12,7 @@
     </head>
     <body>
         <header>
-            <h2>Google Places API - practice</h2>
-            <a href="http://www.script-tutorials.com/google-places-api-practice/" class="stuts">Back to original tutorial on <span>Script Tutorials</span></a>
+            <h2>Filter ATM or BANK Artha Graha</h2>
         </header>
         <!-- <div class="form-group">
           <select class="varListPorpinsi form-control" name="varListPorpinsi" id="varListPorpinsi">
