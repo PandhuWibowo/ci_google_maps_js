@@ -2,6 +2,7 @@ var geocoder;
 var map;
 var markers = Array();
 var infos = Array();
+var gmarkers = Array();
 
 function initialize() {
     // prepare Geocoder
@@ -17,6 +18,13 @@ function initialize() {
     };
     map = new google.maps.Map(document.getElementById('gmap_canvas'), myOptions);
 }
+
+//Remove Marker
+// function removeMarkers(){
+//     for(i=0; i<gmarkers.length; i++){
+//         gmarkers[i].setMap(null);
+//     }
+// }
 
 // clear overlays function
 function clearOverlays() {
@@ -39,11 +47,12 @@ function clearInfos() {
         }
     }
 }
-
+var addrMarker;
 // find address function
 function findAddress() {
-    var address = document.getElementById("varListKabko").value;
-
+    // var contentTitle;
+    var address = '<b style="color:black;">'+document.getElementById("varListKabko").value+'</b>';
+    var infowindow;
     // script uses our 'geocoder' in order to find location by address name
     geocoder.geocode( { 'address': address}, function(results, status) {
         if (status == google.maps.GeocoderStatus.OK) { // and, if everything is ok
@@ -57,17 +66,64 @@ function findAddress() {
             document.getElementById('lat').value = results[0].geometry.location.lat();
             document.getElementById('lng').value = results[0].geometry.location.lng();
 
+            // membuat objek info window
+            infowindow = new google.maps.InfoWindow({
+              content: address,
+              position: addrLocation
+            });
+
             // and then - add new custom marker
-            var addrMarker = new google.maps.Marker({
+            addrMarker = new google.maps.Marker({
                 position: addrLocation,
                 map: map,
+                // draggable: true,
                 title: results[0].formatted_address,
-                icon: 'assets/image/marker.png'
+                // icon: 'assets/image/marker.png',
+
+                icon: {
+                  labelOrigin: new google.maps.Point(45, 60),
+                  url: 'assets/image/agi.png',
+                  // size: new google.maps.Size(22, 40),
+                  origin: new google.maps.Point(0, 0),
+                  anchor: new google.maps.Point(30, 40),
+                },
+                animation: google.maps.Animation.DROP,
             });
+            addrMarker.setMap(null);
+            // addrMarker.addListener('click', toggleBounce);
+            // Push your newly created marker into the array:
+            // gmarkers.push(addrMarker);
+            // event saat marker diklik
+            addrMarker.addListener('click', function() {
+              // tampilkan info window di atas marker
+              infowindow.open(map, addrMarker);
+            });
+
+            //Clear for losing marker in location center
+            //=========================================//
+            if (gmarkers) {
+                for (i in gmarkers) {
+                    gmarkers[i].setMap(null);
+                }
+                gmarkers = [];
+            }
+
+            gmarkers.push(addrMarker);
+            //=========================================//
+
         } else {
             alert('Geocode was not successful for the following reason: ' + status);
         }
     });
+}
+
+//Icon Marker
+function toggleBounce() {
+  if (addrMarker.getAnimation() !== null) {
+    addrMarker.setAnimation(null);
+  } else {
+    addrMarker.setAnimation(google.maps.Animation.BOUNCE);
+  }
 }
 
 // find custom places function
@@ -78,8 +134,6 @@ function findPlaces() {
     var radius = document.getElementById('gmap_radius').value;
     // var keyword = document.getElementById('gmap_keyword').value;
     var keyword = 'artha graha';
-
-
 
     var lat = document.getElementById('lat').value;
     var lng = document.getElementById('lng').value;
@@ -100,6 +154,9 @@ function findPlaces() {
     service = new google.maps.places.PlacesService(map);
     service.search(request, createMarkers);
 }
+
+
+
 
 // create markers (from 'findPlaces' function)
 function createMarkers(results, status) {
@@ -125,7 +182,8 @@ function createMarker(obj) {
     var mark = new google.maps.Marker({
         position: obj.geometry.location,
         map: map,
-        title: obj.name
+        title: obj.name,
+        icon:'assets/image/agi.png'
     });
     markers.push(mark);
 
