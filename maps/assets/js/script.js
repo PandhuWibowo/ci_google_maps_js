@@ -77,7 +77,9 @@ function findPlaces() {
     var type = document.getElementById('gmap_type').value;
     var radius = document.getElementById('gmap_radius').value;
     // var keyword = document.getElementById('gmap_keyword').value;
-    var keyword = 'mandiri';
+    var keyword = 'artha graha';
+
+
 
     var lat = document.getElementById('lat').value;
     var lng = document.getElementById('lng').value;
